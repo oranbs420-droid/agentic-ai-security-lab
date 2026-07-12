@@ -79,6 +79,25 @@ class AgenticSecurityLab:
 
     def chat(self, query: str, tenant_id: str, secure: bool = True) -> ChatResult:
         retrieved = self.retrieve(query=query, tenant_id=tenant_id, secure=secure)
+        return self.respond_with_documents(
+            retrieved=retrieved,
+            tenant_id=tenant_id,
+            secure=secure,
+        )
+
+    def respond_with_documents(
+        self,
+        retrieved: Iterable[Document],
+        tenant_id: str,
+        secure: bool = True,
+    ) -> ChatResult:
+        """Evaluate documents returned by any retrieval backend.
+
+        Phase 2 uses this boundary to connect ChromaDB while preserving the
+        deterministic vulnerable-versus-secure comparison.
+        """
+
+        retrieved = list(retrieved)
         context = "\n".join(document.content for document in retrieved)
         findings: list[str] = []
 
@@ -167,4 +186,3 @@ class AgenticSecurityLab:
 
     def _audit(self, event: str, status: str, reason: str) -> None:
         self.audit_log.append({"event": event, "status": status, "reason": reason})
-
