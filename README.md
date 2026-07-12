@@ -20,6 +20,32 @@ The repository is designed as evidence for AI Security Researcher, AI Security E
 - Automated security regression tests
 - Initial OWASP GenAI threat model
 
+## Phase 2 API and vector service
+
+The lab now exposes the research scenarios through a real FastAPI service and
+uses ChromaDB as its vector store. A deterministic local embedding keeps the
+project free, reproducible, and independent of model-provider credentials.
+
+Start the API:
+
+```bash
+python -m pip install ".[dev]"
+uvicorn agentic_security_lab.api:app --reload
+```
+
+Open `http://127.0.0.1:8000/docs` to use the generated interactive API.
+
+Example secure query:
+
+```bash
+curl -X POST http://127.0.0.1:8000/v1/chat \
+  -H "Content-Type: application/json" \
+  -d '{"query":"payroll reference","tenant_id":"alpha","secure":true}'
+```
+
+Set `secure` to `false` only inside this authorized synthetic lab to reproduce
+the deliberately vulnerable retrieval and agent behavior.
+
 No external commands, emails, payments, model APIs, or real secrets are used.
 
 ## Quick start
@@ -72,4 +98,3 @@ See [the initial threat model](docs/THREAT_MODEL.md) for assets, trust boundarie
 ## Ethical scope
 
 This repository is intended for authorized research and defensive education. Deliberately vulnerable behavior is isolated, deterministic, and uses only synthetic data.
-
