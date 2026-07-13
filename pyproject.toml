@@ -10,7 +10,14 @@ requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Oran Ben Shushan" }]
 keywords = ["ai-security", "rag-security", "prompt-injection", "agentic-ai"]
+dependencies = [
+    "chromadb>=1.0,<2",
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.30,<1",
+]
+
+[project.optional-dependencies]
+dev = ["httpx>=0.27,<1"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
